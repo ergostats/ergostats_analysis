@@ -62,6 +62,7 @@ Ahora con un archivo completo:
 
 ```{r}
 
+Otro
 ```
 
 
