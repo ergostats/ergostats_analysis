@@ -36,13 +36,22 @@ remesas_prov <- read_rds("../032022_remesas/data/clean/remesas_prov_anual_250320
 
 remesas_area <- read_rds("../032022_remesas/data/clean/remesas_area_anual_25032022.rds")
 
+centroides_provincia <-read_rds("../general/mapas/dpa/centroides_provincias.rds")
+
+mapa_provincia <-read_rds("../general/mapas/dpa/shapefile_provincias.rds")
+
 pin_write(board = carpeta,x = remesas_pais,name = "remesas_pais")
 
 pin_write(board = carpeta,x = remesas_prov,name = "remesas_prov")
 
 pin_write(board = carpeta,x = remesas_area,name = "remesas_area")
 
-pin_read(carpeta,"remesas_pais")
+pin_write(board = carpeta,x = centroides_provincia,name = "centroides_provincia")
+
+pin_write(board = carpeta,x = mapa_provincia,name = "mapa_provincia")
+
+
+# pin_read(carpeta,"remesas_pais")
 
 
 
