@@ -1,0 +1,59 @@
+---
+title: "Integrando mi trabajo y mi proyecto"
+author: "Alex Bajaña"
+date: "28/3/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Contexto
+
+Para este blog voy a compartir los análisis que he hecho con mi libreria y el ambiente de trabajo de mis investigaciones en transcurso. 
+
+## Compartir datos entre mis proyectos
+
+Empleare la libreria "pins" para compartir los datos entre mi proyecto "world_bank_personal" y los resultados de los análisis que realizo para ERGOSTATS. 
+
+Primero creo un tablero con `pins`
+```{r}
+library(pins)
+library(tidyverse)
+
+carpeta <- board_folder(path = "C:/Users/Alex/OneDrive/ergos_data")
+
+
+
+```
+Creo mi objeto con la tabla de entrada de remesas anuales por pais de origen. Fuente: https://contenido.bce.fin.ec/frame.php?CNT=ARB0000985
+
+```{r}
+remesas_pais <- read_rds("../032022_remesas/data/clean/remesas_pais_anual_25032022.rds")
+
+remesas_prov <- read_rds("../032022_remesas/data/clean/remesas_prov_anual_25032022.rds")
+
+remesas_area <- read_rds("../032022_remesas/data/clean/remesas_area_anual_25032022.rds")
+
+pin_write(board = carpeta,x = remesas_pais,name = "remesas_pais")
+
+pin_write(board = carpeta,x = remesas_prov,name = "remesas_prov")
+
+pin_write(board = carpeta,x = remesas_area,name = "remesas_area")
+
+pin_read(carpeta,"remesas_pais")
+
+
+
+```
+
+
+Ahora con un archivo completo:
+
+```{r}
+
+```
+
+
+Para hacer este documento emplee la documentación dela libreria `pins`
