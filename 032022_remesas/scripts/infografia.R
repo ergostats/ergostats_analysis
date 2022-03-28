@@ -8,6 +8,7 @@ library(fuzzyjoin)
 library(patchwork)
 library(scales)
 library(ggalt)
+library(phenomenology)
 
 # Lectura del archivo -----------------------------------------------------
 
@@ -110,6 +111,8 @@ clean_remesas_area <- remesas_anuales_area %>%  clean_bce(variable_grupo = "sect
 # Guardamos el archivo temporal:
 
 write_rds(clean_remesas,"032022_remesas/data/clean/remesas_prov_anual_25032022.rds")
+write_rds(clean_remesas_pais,"032022_remesas/data/clean/remesas_pais_anual_25032022.rds")
+write_rds(clean_remesas_area,"032022_remesas/data/clean/remesas_area_anual_25032022.rds")
 
 
 # Lectura de shapefiles ---------------------------------------------------
@@ -197,35 +200,14 @@ plots_map
 # Series de tiempo --------------------------------------------------------
 
 plots_area <- clean_remesas_area %>% 
-  group_by(sector) %>% 
-  mutate(remesas_scaled = scale(remesas),
-         sector = str_to_sentence(sector)) %>% 
-  filter(str_detect(sector,"Total",negate = T)) %>% 
-  ggplot(mapping = aes(x = periodo,y = evolucion,color = sector))+
-  geom_point() + 
-  geom_xspline() + 
-geom_hline(mapping = aes(yintercept = 0))+ 
-  scale_color_manual(values = c(Rural = "#03071e",
-                                Urbano = "#9d0208"))+
-  scale_y_continuous(labels = percent) +
-  labs(title = "Evolución de las remesas por area de residencia:")+
-  theme_minimal(base_size = 30) +
-  theme(title = element_text(),
-        axis.title.x = element_blank(),
-        axis.text.x = element_blank(),
-        axis.title.y = element_blank(),
-        # axis.text.y = element_blank(),
-        axis.ticks = element_blank(),
-        legend.position = "top",
-        legend.title = element_blank(),
-        legend.margin = margin(0,2,0,2,"cm"),
-        legend.spacing.x = unit(0.5,"cm"),
-        panel.grid.major = element_blank(),
-        panel.border = element_blank(),
-        # plot.title = element_text(size = 20),
-        panel.background = element_rect(fill = "transparent", colour = NA),
-        plot.background = element_rect(fill = "transparent", colour = NA)
-  ) 
+  dplyr::filter(stringr::str_detect(sector,"Total",negate = T)) %>% 
+  taxform_smoothline(tabla = .,
+                     group_var = "sector",
+                     time_var = "periodo",
+                     percent_var = "evolucion",
+                     paleta = "default")
+
+
   
 
 ggsave(plot = plots_area,filename = "032022_remesas/output/series_remesas.png",
