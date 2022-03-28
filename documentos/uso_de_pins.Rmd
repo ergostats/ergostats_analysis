@@ -22,7 +22,7 @@ Primero creo un tablero con `pins`
 library(pins)
 library(tidyverse)
 
-carpeta <- board_folder(path = "~/ergostats_analysis/")
+carpeta <- board_folder(path = "C:/Users/Alex/OneDrive/ergos_data")
 
 
 
@@ -30,12 +30,30 @@ carpeta <- board_folder(path = "~/ergostats_analysis/")
 Creo mi objeto con la tabla de entrada de remesas anuales por pais de origen. Fuente: https://contenido.bce.fin.ec/frame.php?CNT=ARB0000985
 
 ```{r}
-remesas_pais <- read_rds("032022_remesas/data/clean/remesas_pais_anual_25032022.rds")
+remesas_pais <- read_rds("../032022_remesas/data/clean/remesas_pais_anual_25032022.rds")
 
-pin_write(board = carpeta,x = head(remesas_pais),name = "remesas_pais")
+remesas_prov <- read_rds("../032022_remesas/data/clean/remesas_prov_anual_25032022.rds")
+
+remesas_area <- read_rds("../032022_remesas/data/clean/remesas_area_anual_25032022.rds")
+
+pin_write(board = carpeta,x = remesas_pais,name = "remesas_pais")
+
+pin_write(board = carpeta,x = remesas_prov,name = "remesas_prov")
+
+pin_write(board = carpeta,x = remesas_area,name = "remesas_area")
+
+pin_read(carpeta,"remesas_pais")
 
 
 
 ```
+
+
+Ahora con un archivo completo:
+
+```{r}
+
+```
+
 
 Para hacer este documento emplee la documentación dela libreria `pins`
